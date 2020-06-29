@@ -19,9 +19,7 @@ public class Tweet {
     @ColumnInfo
     Long id;
     @ColumnInfo
-    String userHandle;
-    @ColumnInfo
-    String timestamp;
+    String createdAt;
     @ColumnInfo
     String body;
 
@@ -29,18 +27,25 @@ public class Tweet {
     // keeping the logical separation between the two objects.
     @Embedded
     User user;
-
+    public Tweet(){}
+    public Tweet(Long id, String createdAt, String body, User user) {
+        this.id = id;
+        this.createdAt= createdAt;
+        this.body = body;
+        this.user = user;
+    }
 
     // Add a constructor that creates an object from the JSON response
-    public Tweet(JSONObject object){
+    public static Tweet fromJson(JSONObject object){
+        Tweet tweet = new Tweet();
         try {
-            this.user = User.parseJSON(object.getJSONObject("user"));
-            this.userHandle = object.getString("user_username");
-            this.timestamp = object.getString("timestamp");
-            this.body = object.getString("body");
+            tweet.user = User.parseJSON(object.getJSONObject("user"));
+            tweet.createdAt = object.getString("created_at");
+            tweet.body = object.getString("text");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return tweet;
     }
 
     public Long getId() {
@@ -51,20 +56,13 @@ public class Tweet {
         this.id = id;
     }
 
-    public String getUserHandle() {
-        return userHandle;
-    }
-
-    public void setUserHandle(String userHandle) {
-        this.userHandle = userHandle;
-    }
 
     public String getTimestamp() {
-        return timestamp;
+        return createdAt;
     }
 
     public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
+        this.createdAt = timestamp;
     }
 
     public String getBody() {
@@ -95,7 +93,7 @@ public class Tweet {
                 continue;
             }
 
-            Tweet tweet = new Tweet(tweetJson);
+            Tweet tweet = fromJson(tweetJson);
             tweets.add(tweet);
         }
 

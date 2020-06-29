@@ -10,21 +10,37 @@ public class User {
     @ColumnInfo
     String name;
 
+    @ColumnInfo
+    String profileImageUrl;
+
     // normally this field would be annotated @PrimaryKey because this is an embedded object
     // it is not needed
     @ColumnInfo
-    Long twitter_id;
+    String screenName;
+
 
     public static User parseJSON(JSONObject tweetJson) {
-
         User user = new User();
         try {
-            user.twitter_id = tweetJson.getLong("id");
+            user.screenName = tweetJson.getString("screen_name");
             user.name = tweetJson.getString("name");
+            user.profileImageUrl = tweetJson.getString("profile_image_url_https");
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public String getScreenName() {
+        return screenName;
     }
 }

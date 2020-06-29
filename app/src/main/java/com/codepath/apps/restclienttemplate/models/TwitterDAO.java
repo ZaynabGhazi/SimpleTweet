@@ -13,7 +13,7 @@ public interface TwitterDAO {
     @Query("SELECT * FROM Tweet WHERE id = :tweetId")
     Tweet byTweetId(Long tweetId);
 
-    @Query("SELECT * FROM Tweet ORDER BY timestamp")
+    @Query("SELECT * FROM Tweet ORDER BY createdAt")
     List<Tweet> getRecentTweets();
 
     // Replace strategy is needed to ensure an update on the table row.  Otherwise the insertion will
