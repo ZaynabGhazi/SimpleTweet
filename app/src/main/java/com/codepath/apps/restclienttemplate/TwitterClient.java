@@ -47,11 +47,11 @@ public class TwitterClient extends OAuthBaseClient {
     }
 
     //post tweet
-    public void postTweet(String body, JsonHttpResponseHandler handler) {
+    public void publishTweet(String body, JsonHttpResponseHandler handler) {
         String apiUrl = getApiUrl("statuses/update.json");
         RequestParams params = new RequestParams();
         params.put("status", body);
         //params type tbchecked
-        client.post(apiUrl, String.valueOf(params), handler);
+        client.post(apiUrl, params, "", handler);
     }
 }

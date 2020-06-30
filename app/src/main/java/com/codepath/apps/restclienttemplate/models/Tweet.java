@@ -1,5 +1,8 @@
 package com.codepath.apps.restclienttemplate.models;
 
+import android.text.format.DateUtils;
+import android.util.Log;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 
@@ -9,9 +12,14 @@ import androidx.room.PrimaryKey;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
+@Parcel
 @Entity
 public class Tweet {
     // Define database columns and associated fields
@@ -27,16 +35,19 @@ public class Tweet {
     // keeping the logical separation between the two objects.
     @Embedded
     User user;
-    public Tweet(){}
+
+    public Tweet() {
+    }
+
     public Tweet(Long id, String createdAt, String body, User user) {
         this.id = id;
-        this.createdAt= createdAt;
+        this.createdAt = createdAt;
         this.body = body;
         this.user = user;
     }
 
     // Add a constructor that creates an object from the JSON response
-    public static Tweet fromJson(JSONObject object){
+    public static Tweet fromJson(JSONObject object) {
         Tweet tweet = new Tweet();
         try {
             tweet.user = User.parseJSON(object.getJSONObject("user"));
@@ -58,7 +69,8 @@ public class Tweet {
 
 
     public String getTimestamp() {
-        return createdAt;
+        // Log.i("TIMESTAMP",getRelativeTimeAgo("Tue Jun 30 13:22:23 +0000 2020"));
+        return getRelativeTimeAgo(createdAt);
     }
 
     public void setTimestamp(String timestamp) {
@@ -84,7 +96,7 @@ public class Tweet {
     public static ArrayList<Tweet> fromJson(JSONArray jsonArray) {
         ArrayList<Tweet> tweets = new ArrayList<Tweet>(jsonArray.length());
 
-        for (int i=0; i < jsonArray.length(); i++) {
+        for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject tweetJson = null;
             try {
                 tweetJson = jsonArray.getJSONObject(i);
@@ -98,5 +110,23 @@ public class Tweet {
         }
 
         return tweets;
+    }
+
+    //format timestamp:
+    public String getRelativeTimeAgo(String rawJsonDate) {
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        sf.setLenient(true);
+
+        String relativeDate = "";
+        try {
+            long dateMillis = sf.parse(rawJsonDate).getTime();
+            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return relativeDate;
     }
 }

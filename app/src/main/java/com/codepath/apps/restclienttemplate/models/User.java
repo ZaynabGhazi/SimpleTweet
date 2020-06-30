@@ -4,7 +4,9 @@ import androidx.room.ColumnInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcel;
 
+@Parcel
 public class User {
 
     @ColumnInfo
@@ -18,6 +20,8 @@ public class User {
     @ColumnInfo
     String screenName;
 
+    public User() {
+    }
 
     public static User parseJSON(JSONObject tweetJson) {
         User user = new User();
