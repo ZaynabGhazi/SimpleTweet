@@ -50,6 +50,7 @@ public class Tweet {
     public static Tweet fromJson(JSONObject object) {
         Tweet tweet = new Tweet();
         try {
+            tweet.id = object.getLong("id");
             tweet.user = User.parseJSON(object.getJSONObject("user"));
             tweet.createdAt = object.getString("created_at");
             tweet.body = object.getString("text");

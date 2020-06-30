@@ -36,10 +36,10 @@ public class TwitterClient extends OAuthBaseClient {
     }
 
     //fetch homepage
-    public void getHomeTimeline(int page, JsonHttpResponseHandler handler) {
+    public void getHomeTimeline(JsonHttpResponseHandler handler) {
         String apiUrl = getApiUrl("statuses/home_timeline.json");
         RequestParams params = new RequestParams();
-        params.put("page", String.valueOf(page));
+        //params.put("page", String.valueOf(page));
         //tbchanged
         params.put("count", 25);
         params.put("since_id", 1);
@@ -54,4 +54,13 @@ public class TwitterClient extends OAuthBaseClient {
         //params type tbchecked
         client.post(apiUrl, params, "", handler);
     }
+
+    public void getNextPageOftweets(JsonHttpResponseHandler handler, Long maxId) {
+        String apiUrl = getApiUrl("statuses/home_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", 25);
+        params.put("max_id", maxId);
+        client.get(apiUrl, params, handler);
+    }
+
 }
