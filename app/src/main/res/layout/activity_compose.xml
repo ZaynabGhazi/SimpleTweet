@@ -18,7 +18,7 @@
         android:gravity="start|top"
         android:hint="@string/what_s_happening"
         android:inputType="textMultiLine"
-        android:maxLength="140"
+        android:maxLength="280"
         android:minLines="5" />
 
     <Button

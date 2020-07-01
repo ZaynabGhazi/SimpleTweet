@@ -1,21 +1,26 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
 import org.w3c.dom.Text;
 
 import java.util.List;
+
+import static android.text.TextUtils.isEmpty;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
     Context context;
@@ -64,6 +69,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvScreenName;
         TextView tvTimestamp;
         TextView tvUsername;
+        ImageView ivMedia;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +78,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvTimestamp = itemView.findViewById(R.id.tvTimeStamp);
             tvUsername = itemView.findViewById(R.id.tvUsername);
+            ivMedia = itemView.findViewById(R.id.iv_media);
         }
 
         public void bind(Tweet tweet) {
@@ -80,6 +87,25 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvTimestamp.setText(tweet.getTimestamp());
             tvUsername.setText("@" + tweet.getUser().getScreenName());
             Glide.with(context).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+            //implement tweet pictures
+            if (!isEmpty(tweet.getBody_image_url())) {
+                Glide.with(context).load(tweet.getBody_image_url()).override(Target.SIZE_ORIGINAL, 200).into(ivMedia);
+                Log.i("TWEET IMAGE", tweet.getBody_image_url());
+            } else {
+                ivMedia.setVisibility(View.GONE);
+            }
         }
+
+    }
+
+    //solve glide issues:
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 }

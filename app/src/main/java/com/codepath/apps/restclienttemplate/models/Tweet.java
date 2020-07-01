@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import static android.text.TextUtils.isEmpty;
+
 @Parcel
 @Entity(foreignKeys = @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "userid"))
 public class Tweet {
@@ -42,6 +44,9 @@ public class Tweet {
     @ColumnInfo
     Long userid;
 
+    @ColumnInfo
+    String body_image_url;
+
     public Tweet() {
     }
 
@@ -54,6 +59,16 @@ public class Tweet {
             tweet.createdAt = object.getString("created_at");
             tweet.body = object.getString("text");
             tweet.userid = tweet.user.id;
+            //String url = object.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");
+            //Log.w("url fetched", url);
+            String url = "";
+            if (object.getJSONObject("entities").has("media")) {
+                url += object.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");
+            }
+            if (!isEmpty(url)) {
+                tweet.body_image_url = url;
+                Log.i("MEDIA", tweet.body_image_url);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -80,6 +95,10 @@ public class Tweet {
 
     public String getBody() {
         return body;
+    }
+
+    public String getBody_image_url() {
+        return body_image_url;
     }
 
     public void setBody(String body) {
