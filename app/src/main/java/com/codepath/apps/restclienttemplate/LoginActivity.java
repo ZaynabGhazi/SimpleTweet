@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
+import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.apps.restclienttemplate.models.TweetDAO;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
@@ -18,14 +19,15 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		final Tweet tweet = new Tweet();
 		//DB management
-		/*tweetDAO = ((TwitterApp) getApplicationContext()).getMyDatabase().tweetDao();
+		tweetDAO = ((TwitterApp) getApplicationContext()).getMyDatabase().tweetDao();
 		AsyncTask.execute(new Runnable() {
 			@Override
 			public void run() {
-				tweetDAO.insertTweet();
+				tweetDAO.insertModel(tweet);
 			}
-		});*/
+		});
 	}
 
 	@Override
