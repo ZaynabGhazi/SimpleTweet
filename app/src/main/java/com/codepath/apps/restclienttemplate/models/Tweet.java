@@ -1,5 +1,6 @@
 package com.codepath.apps.restclienttemplate.models;
 
+import android.provider.ContactsContract;
 import android.text.format.DateUtils;
 import android.util.Log;
 
@@ -7,6 +8,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Embedded;
 
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import org.json.JSONArray;
@@ -20,30 +23,26 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 @Parcel
-@Entity
+@Entity(foreignKeys = @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "userid"))
 public class Tweet {
     // Define database columns and associated fields
     @PrimaryKey
     @ColumnInfo
     Long id;
+
     @ColumnInfo
     String createdAt;
+
     @ColumnInfo
     String body;
 
-    // Use @Embedded to keep the column entries as part of the same table while still
-    // keeping the logical separation between the two objects.
-    @Embedded
+    @Ignore
     User user;
 
-    public Tweet() {
-    }
+    @ColumnInfo
+    Long userid;
 
-    public Tweet(Long id, String createdAt, String body, User user) {
-        this.id = id;
-        this.createdAt = createdAt;
-        this.body = body;
-        this.user = user;
+    public Tweet() {
     }
 
     // Add a constructor that creates an object from the JSON response
@@ -54,6 +53,7 @@ public class Tweet {
             tweet.user = User.parseJSON(object.getJSONObject("user"));
             tweet.createdAt = object.getString("created_at");
             tweet.body = object.getString("text");
+            tweet.userid = tweet.user.id;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -123,7 +123,7 @@ public class Tweet {
         try {
             long dateMillis = sf.parse(rawJsonDate).getTime();
             relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE).toString();
         } catch (ParseException e) {
             e.printStackTrace();
         }

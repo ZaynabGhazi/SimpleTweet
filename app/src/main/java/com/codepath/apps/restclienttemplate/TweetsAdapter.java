@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
@@ -61,6 +63,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvBody;
         TextView tvScreenName;
         TextView tvTimestamp;
+        TextView tvUsername;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,12 +71,14 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvBody = itemView.findViewById(R.id.tvBody);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvTimestamp = itemView.findViewById(R.id.tvTimeStamp);
+            tvUsername = itemView.findViewById(R.id.tvUsername);
         }
 
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.getBody());
-            tvScreenName.setText(tweet.getUser().getScreenName());
+            tvScreenName.setText(tweet.getUser().getName());
             tvTimestamp.setText(tweet.getTimestamp());
+            tvUsername.setText("@" + tweet.getUser().getScreenName());
             Glide.with(context).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
         }
     }

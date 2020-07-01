@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +17,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.apps.restclienttemplate.models.TweetDAO;
+import com.codepath.apps.restclienttemplate.models.TweetWithUser;
+import com.codepath.apps.restclienttemplate.models.User;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -31,7 +35,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     private static final String TAG = "TimelineActivity";
     private final int REQUESTCODE = 20;
-
+    TweetDAO tweetDAO;
     TwitterClient client;
     RecyclerView rvTweets;
     List<Tweet> tweets;
@@ -43,10 +47,27 @@ public class TimelineActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+
         client = TwitterApp.getRestClient(this);
+        tweetDAO = ((TwitterApp) getApplicationContext()).getMyDatabase().tweetDao();
+
         initializeSwipeContainer();
         initializeView();
+        setupDB();
         populateHomeTimeline();
+    }
+
+    private void setupDB() {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "db data loading");
+                List<TweetWithUser> tweetWithUsers = tweetDAO.getRecentTweets();
+                List<Tweet> tweetsFromDB = TweetWithUser.getTweetList(tweetWithUsers);
+                adapter.clear();
+                adapter.addAll(tweetsFromDB);
+            }
+        });
     }
 
     private void initializeSwipeContainer() {
@@ -93,7 +114,7 @@ public class TimelineActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Log.e(TAG, "onSuccess! LOADING", throwable);
+                Log.e(TAG, "onFailure! LOADING", throwable);
 
             }
         }, tweets.get(tweets.size() - 1).getId());
@@ -105,9 +126,19 @@ public class TimelineActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 Log.i(TAG, "onSuccess!" + json.toString());
                 JSONArray jsonArray = json.jsonArray;
+                final List<Tweet> tweetsFromNet = Tweet.fromJson(jsonArray);
                 adapter.clear();
-                adapter.addAll(Tweet.fromJson(jsonArray));
+                adapter.addAll(tweetsFromNet);
                 swipeContainer.setRefreshing(false);
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.i(TAG, "saving data into db");
+                        List<User> usersFromNet = User.parseJSONTweetArray(tweetsFromNet);
+                        tweetDAO.insertModel(usersFromNet.toArray(new User[0]));
+                        tweetDAO.insertModel(tweetsFromNet.toArray(new Tweet[0]));
+                    }
+                });
                 Log.i(TAG, "SIZE_tweets" + tweets.size());
             }
 

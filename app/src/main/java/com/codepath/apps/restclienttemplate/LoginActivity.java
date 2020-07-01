@@ -7,25 +7,25 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
-import com.codepath.apps.restclienttemplate.models.TwitterDAO;
+import com.codepath.apps.restclienttemplate.models.TweetDAO;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
-	TwitterDAO twitterDAO;
-	
+	TweetDAO tweetDAO;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		//DB management
-		twitterDAO = ((TwitterApp) getApplicationContext()).getMyDatabase().twitterDao();
+		/*tweetDAO = ((TwitterApp) getApplicationContext()).getMyDatabase().tweetDao();
 		AsyncTask.execute(new Runnable() {
 			@Override
 			public void run() {
-				twitterDAO.insertTweet();
+				tweetDAO.insertTweet();
 			}
-		});
+		});*/
 	}
 
 	@Override
