@@ -9,7 +9,7 @@ import com.codepath.apps.restclienttemplate.models.TweetDAO;
 import com.codepath.apps.restclienttemplate.models.User;
 
 //increased version number for every schema update
-@Database(entities = {Tweet.class, User.class}, version = 8)
+@Database(entities = {Tweet.class, User.class}, version = 10)
 public abstract class MyDatabase extends RoomDatabase {
     public abstract TweetDAO tweetDao();
 

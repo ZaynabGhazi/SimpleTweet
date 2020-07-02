@@ -49,6 +49,12 @@ public class Tweet {
     @ColumnInfo
     String body_image_url;
 
+    int favorite_count;
+
+    int retweet_count;
+
+    boolean isFavorite;
+
     public Tweet() {
     }
 
@@ -61,6 +67,10 @@ public class Tweet {
             tweet.createdAt = object.getString("created_at");
             tweet.body = object.getString("text");
             tweet.userid = tweet.user.id;
+            tweet.favorite_count = object.getInt("favorite_count");
+            tweet.retweet_count = object.getInt("retweet_count");
+            tweet.isFavorite = false;
+
             //String url = object.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");
             //Log.w("url fetched", url);
             String url = "";
@@ -75,6 +85,14 @@ public class Tweet {
             e.printStackTrace();
         }
         return tweet;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
     }
 
     public Long getId() {
@@ -114,6 +132,22 @@ public class Tweet {
         this.user = user;
     }
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public Long getUserid() {
+        return userid;
+    }
+
+    public int getFavorite_count() {
+        return favorite_count;
+    }
+
+    public int getRetweet_count() {
+        return retweet_count;
+    }
+
     public static ArrayList<Tweet> fromJson(JSONArray jsonArray) {
         ArrayList<Tweet> tweets = new ArrayList<Tweet>(jsonArray.length());
 
@@ -133,21 +167,4 @@ public class Tweet {
         return tweets;
     }
 
-    //format timestamp:
-    public String getRelativeTimeAgo(String rawJsonDate) {
-        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
-        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
-        sf.setLenient(true);
-
-        String relativeDate = "";
-        try {
-            long dateMillis = sf.parse(rawJsonDate).getTime();
-            relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
-                    System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_ABBREV_RELATIVE).toString();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return relativeDate;
-    }
 }

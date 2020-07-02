@@ -51,7 +51,6 @@
         android:layout_toStartOf="@id/tvBody"
         android:layout_toEndOf="@id/tvUsername"
         android:gravity="right"
-        android:maxLines="1"
         tools:text="timestamp" />
 
     <TextView
@@ -68,10 +67,55 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_below="@+id/tvBody"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="false"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginBottom="0dp"
         android:layout_toEndOf="@+id/ivProfileImage"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/ivFav"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/iv_media"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:tint="@android:color/holo_red_light"
+        android:layout_toStartOf="@+id/tvFav"
+        app:srcCompat="@drawable/ic_vector_heart_stroke" />
+
+    <TextView
+        android:id="@+id/tvFav"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_media"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="right"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:text="TextView" />
+
+    <ImageView
+        android:id="@+id/ivRetweet"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_below="@+id/iv_media"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toStartOf="@+id/tvRetweet"
+        app:srcCompat="@drawable/ic_vector_retweet_stroke" />
+
+    <TextView
+        android:id="@+id/tvRetweet"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_media"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:layout_toStartOf="@+id/ivFav"
+        android:text="TextView" />
 </RelativeLayout>
