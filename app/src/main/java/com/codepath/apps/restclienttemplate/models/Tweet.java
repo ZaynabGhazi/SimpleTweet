@@ -58,6 +58,7 @@ public class Tweet {
     @ColumnInfo
     boolean isFavorite;
 
+
     public Tweet() {
     }
 
@@ -72,10 +73,11 @@ public class Tweet {
             tweet.userid = tweet.user.id;
             tweet.favorite_count = object.getInt("favorite_count");
             tweet.retweet_count = object.getInt("retweet_count");
+            Log.i("COUNTS", Integer.toString(tweet.favorite_count) + "haha" + String.valueOf(tweet.retweet_count));
+            //Will always be 0 since it is only available to premium API keys
+            //tweet.reply_count = object.getInt("reply_count");
+            //tweet.reply_count = (int)(Math.random() * 10000) + 5;  //for demo purposes
             tweet.isFavorite = false;
-
-            //String url = object.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");
-            //Log.w("url fetched", url);
             String url = "";
             if (object.getJSONObject("entities").has("media")) {
                 url += object.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");
@@ -118,6 +120,7 @@ public class Tweet {
     public String getBody() {
         return body;
     }
+
 
     public String getBody_image_url() {
         return body_image_url;

@@ -80,6 +80,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvRetweet;
         ImageView ivFav;
         ImageView ivRetweet;
+        TextView tvReply;
         //network:
         TwitterClient client;
 
@@ -96,6 +97,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivFav = itemView.findViewById(R.id.ivFav);
             client = TwitterApp.getRestClient(context);
             ivRetweet = itemView.findViewById(R.id.ivRetweet);
+            tvReply = itemView.findViewById(R.id.tvReply);
         }
 
         public void bind(final Tweet tweet) {
@@ -103,8 +105,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName.setText(tweet.getUser().getName());
             tvTimestamp.setText(tweet.getTimestamp());
             tvUsername.setText("@" + tweet.getUser().getScreenName());
-            tvFav.setText(Integer.toString(tweet.getFavorite_count()));
+            tvFav.setText(String.valueOf(tweet.getFavorite_count()));
             tvRetweet.setText(Integer.toString(tweet.getRetweet_count()));
+            //tvReply.setText(Integer.toString(tweet.getReply_count()));
             Glide.with(context).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
             if (!isEmpty(tweet.getBody_image_url())) {
                 Glide.with(context).load(tweet.getBody_image_url()).override(Target.SIZE_ORIGINAL, 200).into(ivMedia);
