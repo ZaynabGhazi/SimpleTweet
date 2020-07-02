@@ -14,7 +14,7 @@ public interface TweetDAO {
     @Query("SELECT * FROM Tweet WHERE id = :tweetId")
     Tweet byTweetId(Long tweetId);
 
-    @Query("SELECT Tweet.body AS tweet_body, Tweet.createdAt AS tweet_createdAt, Tweet.id AS tweet_id,Tweet.body_image_url AS tweet_body_image_url, User.*" + " FROM Tweet INNER JOIN User ON Tweet.userid = User.id ORDER BY createdAt DESC LIMIT 300")
+    @Query("SELECT Tweet.body AS tweet_body, Tweet.createdAt AS tweet_createdAt, Tweet.id AS tweet_id,Tweet.body_image_url AS tweet_body_image_url,Tweet.isFavorite AS tweet_isFavorite,Tweet.favorite_count AS tweet_favorite_count,Tweet.retweet_count AS tweet_retweet_count, User.*" + " FROM Tweet INNER JOIN User ON Tweet.userid = User.id ORDER BY createdAt DESC LIMIT 5")
     List<TweetWithUser> getRecentTweets();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

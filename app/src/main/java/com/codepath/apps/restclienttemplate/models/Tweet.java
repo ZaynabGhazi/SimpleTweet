@@ -49,10 +49,13 @@ public class Tweet {
     @ColumnInfo
     String body_image_url;
 
+    @ColumnInfo
     int favorite_count;
 
+    @ColumnInfo
     int retweet_count;
 
+    @ColumnInfo
     boolean isFavorite;
 
     public Tweet() {

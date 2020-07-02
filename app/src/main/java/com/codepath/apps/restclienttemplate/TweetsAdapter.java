@@ -17,10 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.w3c.dom.Text;
 
 import java.util.List;
+
+import okhttp3.Headers;
 
 import static android.text.TextUtils.isEmpty;
 import static java.security.AccessController.getContext;
@@ -77,6 +80,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvRetweet;
         ImageView ivFav;
         ImageView ivRetweet;
+        //network:
+        TwitterClient client;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,6 +94,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvFav = itemView.findViewById(R.id.tvFav);
             tvRetweet = itemView.findViewById(R.id.tvRetweet);
             ivFav = itemView.findViewById(R.id.ivFav);
+            client = TwitterApp.getRestClient(context);
+
         }
 
         public void bind(final Tweet tweet) {
@@ -109,6 +116,17 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 @Override
                 public void onClick(View view) {
                     if (!tweet.isFavorite()) {
+                        client.likeTweet(new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                Log.i("Tweet Liked", "successfully.");
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Log.e("Failed to like tweet", " error", throwable);
+                            }
+                        }, tweet.getId());
                         ivFav.setImageResource(R.drawable.ic_vector_heart);
                         tvFav.setText(Integer.toString(Integer.parseInt(tvFav.getText().toString()) + 1));
                         tweet.setFavorite(true);
