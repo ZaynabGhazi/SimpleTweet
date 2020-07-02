@@ -12,6 +12,8 @@ import androidx.room.ForeignKey;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.codepath.apps.restclienttemplate.TimeFormatter;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -85,8 +87,7 @@ public class Tweet {
 
 
     public String getTimestamp() {
-        // Log.i("TIMESTAMP",getRelativeTimeAgo("Tue Jun 30 13:22:23 +0000 2020"));
-        return getRelativeTimeAgo(createdAt);
+        return TimeFormatter.getTimeDifference(createdAt);
     }
 
     public void setTimestamp(String timestamp) {
