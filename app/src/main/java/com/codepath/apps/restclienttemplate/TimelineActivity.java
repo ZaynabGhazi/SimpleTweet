@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -48,6 +49,8 @@ public class TimelineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
 
+        addLogo();
+
         client = TwitterApp.getRestClient(this);
         tweetDAO = ((TwitterApp) getApplicationContext()).getMyDatabase().tweetDao();
 
@@ -55,6 +58,13 @@ public class TimelineActivity extends AppCompatActivity {
         initializeView();
         setupDB();
         populateHomeTimeline();
+
+    }
+
+    private void addLogo() {
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_launcher_twitter_round);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
 
     private void setupDB() {

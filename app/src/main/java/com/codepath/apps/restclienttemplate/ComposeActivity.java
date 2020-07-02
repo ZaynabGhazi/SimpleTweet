@@ -32,27 +32,13 @@ public class ComposeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_compose);
-        etCompose = findViewById(R.id.etCompose);
-        btnTweet = findViewById(R.id.btnTweet);
-        tvCounter = findViewById(R.id.tvCounter);
+        initViews();
         client = TwitterApp.getRestClient(this);
-        //implement character counter:
-        etCompose.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+        addCharCount();
+        composeTweet();
+    }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                tvCounter.setText(MAX_TWEET_LENGTH - s.toString().length() + "/" + MAX_TWEET_LENGTH);
-
-            }
-        });
+    private void composeTweet() {
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,5 +71,37 @@ public class ComposeActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void addCharCount() {
+        etCompose.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                tvCounter.setText(MAX_TWEET_LENGTH - s.toString().length() + "/" + MAX_TWEET_LENGTH);
+
+            }
+        });
+    }
+
+    private void initViews() {
+        setContentView(R.layout.activity_compose);
+        addLogo();
+        etCompose = findViewById(R.id.etCompose);
+        btnTweet = findViewById(R.id.btnTweet);
+        tvCounter = findViewById(R.id.tvCounter);
+    }
+
+    private void addLogo() {
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.ic_launcher_twitter_round);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
     }
 }
