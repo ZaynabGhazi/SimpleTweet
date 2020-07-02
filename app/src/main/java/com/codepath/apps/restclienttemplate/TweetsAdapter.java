@@ -95,7 +95,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvRetweet = itemView.findViewById(R.id.tvRetweet);
             ivFav = itemView.findViewById(R.id.ivFav);
             client = TwitterApp.getRestClient(context);
-
+            ivRetweet = itemView.findViewById(R.id.ivRetweet);
         }
 
         public void bind(final Tweet tweet) {
@@ -112,10 +112,41 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             } else {
                 ivMedia.setVisibility(View.GONE);
             }
+            //additional features:
+            implementLikeFeature(tweet, ivFav);
+            implementRetweetFeature(tweet, ivRetweet);
+
+        }
+
+        //NOTE: can easily implement undo-retweet by analogy to unlike (time constraint)
+        //Retweet
+        private void implementRetweetFeature(final Tweet tweet, final ImageView ivRetweet) {
+            ivRetweet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    client.retweet(new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Headers headers, JSON json) {
+                            Log.i("Tweet retweeted", "successfully.");
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                            Log.e("Failed to like tweet", " error", throwable);
+                        }
+                    }, tweet.getId());
+                    ivRetweet.setImageResource(R.drawable.ic_vector_retweet);
+                    tvRetweet.setText(Integer.toString(Integer.parseInt(tvRetweet.getText().toString()) + 1));
+                }
+            });
+        }
+
+        private void implementLikeFeature(final Tweet tweet, final ImageView ivFav) {
             ivFav.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (!tweet.isFavorite()) {
+                        //update through network
                         client.likeTweet(new JsonHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -134,10 +165,21 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                         ivFav.setImageResource(R.drawable.ic_vector_heart_stroke);
                         tvFav.setText(Integer.toString(Integer.parseInt(tvFav.getText().toString()) - 1));
                         tweet.setFavorite(false);
+                        //update through network
+                        client.unlikeTweet(new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                Log.i("Tweet unliked", "successfully.");
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Log.e("Failed to unlike tweet", " error", throwable);
+                            }
+                        }, tweet.getId());
                     }
                 }
             });
-
         }
 
     }
