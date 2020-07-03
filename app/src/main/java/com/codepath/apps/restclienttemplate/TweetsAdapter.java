@@ -127,19 +127,39 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ivRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    client.retweet(new JsonHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Headers headers, JSON json) {
-                            Log.i("Tweet retweeted", "successfully.");
-                        }
+                    if (!tweet.isRetweeted()) {
+                        //update through network
+                        client.retweet(new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                Log.i("Tweet retweeted", "successfully.");
+                            }
 
-                        @Override
-                        public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                            Log.e("Failed to like tweet", " error", throwable);
-                        }
-                    }, tweet.getId());
-                    ivRetweet.setImageResource(R.drawable.ic_vector_retweet);
-                    tvRetweet.setText(Integer.toString(Integer.parseInt(tvRetweet.getText().toString()) + 1));
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Log.e("Failed to retweet tweet", " error", throwable);
+                            }
+                        }, tweet.getId());
+                        ivRetweet.setImageResource(R.drawable.ic_vector_retweet);
+                        tvRetweet.setText(Integer.toString(Integer.parseInt(tvRetweet.getText().toString()) + 1));
+                        tweet.setRetweeted(true);
+                    } else {
+                        ivRetweet.setImageResource(R.drawable.ic_vector_retweet_stroke);
+                        tvRetweet.setText(Integer.toString(Integer.parseInt(tvRetweet.getText().toString()) - 1));
+                        tweet.setRetweeted(false);
+                        //update through network
+                        client.unretweet(new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                Log.i("Tweet unretweeted", "successfully.");
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Log.e("Failed to unretweet tweet", " error", throwable);
+                            }
+                        }, tweet.getId());
+                    }
                 }
             });
         }

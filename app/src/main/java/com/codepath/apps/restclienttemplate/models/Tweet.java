@@ -61,6 +61,9 @@ public class Tweet {
     @ColumnInfo
     int reply_count;
 
+    @ColumnInfo
+    boolean retweeted;
+
     public Tweet() {
     }
 
@@ -87,6 +90,7 @@ public class Tweet {
                 }
             }
             tweet.isFavorite = false;
+            tweet.retweeted = false;
             //number of replies requires premium API
             //for the sake of DEMO
             tweet.reply_count = tweet.favorite_count + tweet.retweet_count;
@@ -147,6 +151,14 @@ public class Tweet {
 
     public User getUser() {
         return user;
+    }
+
+    public boolean isRetweeted() {
+        return retweeted;
+    }
+
+    public void setRetweeted(boolean retweeted) {
+        this.retweeted = retweeted;
     }
 
     public void setUser(User user) {
