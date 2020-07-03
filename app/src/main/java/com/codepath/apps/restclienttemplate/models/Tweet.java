@@ -77,20 +77,19 @@ public class Tweet {
             tweet.body = object.getString("text");
             tweet.userid = tweet.user.id;
             tweet.favorite_count = object.getInt("favorite_count");
+            tweet.retweet_count = object.getInt("retweet_count");
             JSONObject retweetedStatus = object.getJSONObject("retweeted_status");
-            if (retweetedStatus != null && retweetedStatus.getInt("favorite_count") > 0) {
-                if (retweetedStatus.has("favorite_count")) {
+            if (retweetedStatus != null) {
+                if (retweetedStatus.has("favorite_count") && retweetedStatus.getInt("favorite_count") > 0) {
                     tweet.favorite_count = retweetedStatus.getInt("favorite_count");
                 }
-            }
-            tweet.retweet_count = object.getInt("retweet_count");
-            if (retweetedStatus != null && retweetedStatus.getInt("retweet_count") > 0) {
-                if (retweetedStatus.has("retweet_count")) {
+                if (retweetedStatus.has("retweet_count") && retweetedStatus.getInt("retweet_count") > 0) {
                     tweet.retweet_count = retweetedStatus.getInt("retweet_count");
                 }
             }
             tweet.isFavorite = false;
             tweet.retweeted = false;
+            
             //number of replies requires premium API
             //for the sake of DEMO
             tweet.reply_count = tweet.favorite_count + tweet.retweet_count;
