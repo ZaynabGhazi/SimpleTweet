@@ -55,7 +55,8 @@ GIF created with [Kap](https://getkap.co).
 
 ## Notes
 
-I implemented the like and retweet in the timeline (modified one of the stretch features)
+* I implemented the like and retweet in the timeline (modified one of the stretch features).
+* My walkthrough shows the DB saves 10 tweets but that is one parameter that can be changed in the implementation to save more (device memory concern).
 
 ## Open-source libraries used
 
