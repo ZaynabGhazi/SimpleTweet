@@ -45,9 +45,11 @@ The following **additional** features are implemented:
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
-
-<img src='recap0.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
-<img src='recap02.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+-- login
+<img src='login.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+-- features
+<img src='fullRecap.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+-- database
 <img src='recap3.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
@@ -57,6 +59,7 @@ GIF created with [Kap](https://getkap.co).
 
 * I implemented the like and retweet in the timeline (modified one of the stretch features).
 * My walkthrough shows the DB saves 10 tweets but that is one parameter that can be changed in the implementation to save more (device memory concern).
+* There are more gifs included in the repository.
 
 ## Open-source libraries used
 
