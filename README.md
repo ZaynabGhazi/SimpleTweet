@@ -49,6 +49,7 @@ Here's a walkthrough of implemented user stories **login-features-database**:
 <img src='login.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 <img src='recap0.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 <img src='recap02.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='refresh.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 <img src='recap3.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
