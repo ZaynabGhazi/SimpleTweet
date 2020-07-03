@@ -115,6 +115,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             } else {
                 ivMedia.setVisibility(View.GONE);
             }
+            tvReply.setText(Integer.toString(tweet.getReply_count()));
             //additional features:
             implementLikeFeature(tweet, ivFav);
             implementRetweetFeature(tweet, ivRetweet);
