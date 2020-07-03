@@ -45,11 +45,11 @@ The following **additional** features are implemented:
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
--- login
+**login**
 <img src='login.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
--- features
+**features**
 <img src='fullRecap.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
--- database
+**database**
 <img src='recap3.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 
