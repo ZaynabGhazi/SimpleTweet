@@ -115,7 +115,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             //additional features:
             implementLikeFeature(tweet, ivFav);
             implementRetweetFeature(tweet, ivRetweet);
-
         }
 
         //NOTE: can easily implement undo-retweet by analogy to unlike (time constraint)

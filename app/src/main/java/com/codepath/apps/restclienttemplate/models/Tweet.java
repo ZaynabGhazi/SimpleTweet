@@ -71,11 +71,17 @@ public class Tweet {
             tweet.body = object.getString("text");
             tweet.userid = tweet.user.id;
             tweet.favorite_count = object.getInt("favorite_count");
+
+            JSONObject retweetedStatus = object.getJSONObject("retweeted_status");
+            if (retweetedStatus != null) {
+                if (retweetedStatus.has("favorite_count")) {
+                    tweet.favorite_count = retweetedStatus.getInt("favorite_count");
+                }
+            }
+
             tweet.retweet_count = object.getInt("retweet_count");
             tweet.isFavorite = false;
 
-            //String url = object.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");
-            //Log.w("url fetched", url);
             String url = "";
             if (object.getJSONObject("entities").has("media")) {
                 url += object.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url_https");
@@ -153,7 +159,6 @@ public class Tweet {
 
     public static ArrayList<Tweet> fromJson(JSONArray jsonArray) {
         ArrayList<Tweet> tweets = new ArrayList<Tweet>(jsonArray.length());
-
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject tweetJson = null;
             try {
@@ -162,7 +167,6 @@ public class Tweet {
                 e.printStackTrace();
                 continue;
             }
-
             Tweet tweet = fromJson(tweetJson);
             tweets.add(tweet);
         }
